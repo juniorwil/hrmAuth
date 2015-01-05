@@ -1,0 +1,35 @@
+<?php 
+$this->titulo='Login';
+echo $this->render('layout/titulo') ?>
+<div class="alert alert-error"><i class="icon-remove"></i>
+    <?php echo $this->escapeHtml($this->messages); ?>
+</div>    
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('auth/default', array('controller' => 'index', 'action' => 'login')));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formRow($form->get('usr_name'));
+echo $this->formRow($form->get('usr_password')); ?>
+<div class="control-group">
+   <?php
+    $select = $form->get('rememberme');
+    echo $this->formCheckbox($select);?>
+     <span class="lbl"> </span>Recuerdame 
+</div>     
+<?php        
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>
+<?php // view helper
+    if ($user = $this->identity()) {
+        echo 'Usuario actual ' . $this->escapeHtml($user->usr_name);
+?>		
+ | <a href="<?php echo $this->url('auth/default', array('controller' => 'index', 'action' => 'logout'));?>"><?php echo $this->translate('Logout'); ?></a> 
+<?php
+    } else {
+        echo 'Sin usuario ';
+    }
+?>
